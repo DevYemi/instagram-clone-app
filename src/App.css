@@ -13,6 +13,8 @@
   padding: 1.3em;
   background-color: white;
   border-bottom: 1px solid lightgray;
+  display: flex;
+  justify-content: space-between;
 }
 .header__logo {
   object-fit: contain;
@@ -42,4 +44,38 @@
 }
 .post__avatar {
   margin-right: .5em;
+}
+/* MODAL COMPONENT STYLES */
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#modal__submit__btn {
+  margin-top: 10px;
+  background-color: lightgray;
+}
+/* IMAGEUPLOAD STYLES */
+.imageupload {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: 20px auto;
+}
+.imageupload__progress {
+  width: 100%;
+}
+.imageupload__btn {
+  background-color: rgb(173, 169, 169) !important;
+  width: 50%;
+  margin: 0 auto !important;
+}
+.imageupload__progress{
+  padding: 5px;
+}
+.imageupload__caption {
+  padding: 10px;
+}
+.imageupload__btn, .imageupload__progress, .imageupload__file, .imageupload__caption {
+  margin: 2px 0;
 }
