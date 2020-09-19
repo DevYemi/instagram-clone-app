@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import './cssStyles/modal.css'
 import Modal from '@material-ui/core/Modal';
 import { Button, Input } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
@@ -26,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function GetModal({ modalOpen, setModalOpen, user, setUser, setModalType, modalType }) {
-    console.log("rendering")
     const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
     const [email, setEmail] = useState("");
