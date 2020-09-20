@@ -1,9 +1,7 @@
 .post {
     background-color: white;
     border: 1px solid lightgray;
-    max-width: 500px;
     width: 100%;
-    margin: auto;
     margin-bottom: 2.8em;
   }
   .post__image {
@@ -12,21 +10,32 @@
   }
   .post__text {
     font-weight: normal;
-    padding: 1.2em;
+    padding: .5em 0 1.2em  1.2em;
   }
   .post__header {
     display: flex;
+    align-items: center;
+  }
+  .post__header h3 {
+    font-size: 14px;
+  }
+  .p__headerContainer {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 1.2em;
   }
   .post__avatar {
     margin-right: .5em;
+    width: 30px !important;
+    height: 30px !important;
   }
   .post__comments{
     padding: 10px;
   }
   .post__comments > p {
     margin: 5px 0;
+    font-size: 12px;
   }
   .post__commentBox {
     display: flex;
@@ -48,9 +57,17 @@
     display: flex;
     justify-content: space-between;
   }
+  .postIcons:hover{
+    cursor: pointer;
+  }
   .postIcons__col1 {
     display: flex;
+    align-items: center;
   }
   .postIcons {
     margin: 10px 5px !important;
+  }
+  .post__likeFigure {
+    margin-left: 1em;
+    font-size: small;
   }

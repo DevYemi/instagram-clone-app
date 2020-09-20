@@ -15,28 +15,28 @@ import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 
 
 function Header({ user, setModalOpen, setModalType }) {
-  // const handleLogEntry = (type) => {
-  //   switch (type) {
-  //     case "out":
-  //       if (user) {
-  //         auth.signOut()
-  //       }
-  //       break;
-  //     case "in":
-  //       setModalOpen(true);
-  //       setModalType("logIn")
-  //       break;
+  const handleLogEntry = (type) => {
+    switch (type) {
+      case "out":
+        if (user) {
+          auth.signOut()
+        }
+        break;
+      case "in":
+        setModalOpen(true);
+        setModalType("logIn")
+        break;
 
-  //     default:
-  //       break;
-  //   }
+      default:
+        break;
+    }
 
-  // }
+  }
 
-  // const handleSignUp = (type) => {
-  //   setModalOpen(true);
-  //   setModalType("signUp")
-  // }
+  const handleSignUp = (type) => {
+    setModalOpen(true);
+    setModalType("signUp")
+  }
   return (
     <header>
       <div className="header">
@@ -61,9 +61,9 @@ function Header({ user, setModalOpen, setModalType }) {
           />
 
 
-          {/* {user ? <Button className="header__btn" onClick={() => handleLogEntry("out")}>Log out</Button>
+          {user ? <Button className="header__btn" onClick={() => handleLogEntry("out")}>Log out</Button>
             : <div className= "header__btns"><Button className="header__btn" onClick={() => handleSignUp()}>Sign Up</Button>
-              <Button className="header__btn" onClick={() => handleLogEntry("in")}>Log In</Button> </div>} */}
+              <Button className="header__btn" onClick={() => handleLogEntry("in")}>Log In</Button> </div>}
         </div>
       </div>
     </header>

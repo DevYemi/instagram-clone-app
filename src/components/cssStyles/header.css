@@ -33,6 +33,9 @@ header {
     width: 1.1em !important;
     height: 1.1em !important;
   }
+  .icons:hover{
+    cursor: pointer;
+  }
   .header__sendIcon {
     transform: rotate(-20deg);
     margin: 0 .3em !important;
