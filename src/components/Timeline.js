@@ -1,21 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './cssStyles/Timeline.css';
 import Post from './Post'
-import { db } from './firebase'
 import ImageUpload from './imageUpload'
 import Sidebar from './Sidebar'
+import {useStateValue} from './StateProvider'
 
 
 
-function Timeline({ user }) {
-  const [posts, setPosts] = useState([]);
-  useEffect(() => {
-    db.collection("posts").orderBy("timeStamp", "desc").onSnapshot(snapshot => {
-      setPosts(snapshot.docs.map(doc => {
-        return { post: doc.data(), id: doc.id }
-      }));
-    })
-  }, [])
+function Timeline() {
+  const [{user, posts}] = useStateValue();
+  console.log(posts)
 
 
   return (
@@ -27,7 +21,6 @@ function Timeline({ user }) {
             posts.map(({ post, id }) => <Post
               key={id}
               postId={id}
-              user={user}
               avatar={post.avatar}
               postImage={post.postImage}
               userName={user?.displayName}
@@ -37,9 +30,7 @@ function Timeline({ user }) {
 
         </div>
         <div className="timelineCol2">
-          <Sidebar
-            user={user}
-          />
+          <Sidebar/>
         </div>
       </div>
       {user?.displayName ? <ImageUpload username={user.displayName} />

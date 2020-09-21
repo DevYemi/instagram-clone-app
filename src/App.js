@@ -1,19 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import {db, auth } from './components/firebase'
 import Header from './components/Header'
 import GetModal from './components/Modal';
 import Timeline from './components/Timeline';
 import Saved from './components/Saved'
 import Chat from './components/Chat'
-import Profile from './components/Profile'
+import ProfilePage from './components/ProfilePage'
+import {useStateValue} from './components/StateProvider'
 
 
 
 function App() {
+  const [, dispatch] = useStateValue();
   const [modalOpen, setModalOpen] = useState(false)
-  const [user, setUser] = useState(null);
   const [modalType, setModalType] = useState("logIn")
+  useEffect(() => {
+    db.collection("posts").orderBy("timeStamp", "desc").onSnapshot(snapshot => {
+      dispatch({
+        type: "SET_POSTS",
+        posts: snapshot.docs.map(doc => {return { post: doc.data(), id: doc.id }})
+      }
+      )
+    })
+  }, [])
+  useEffect(() =>{
+    const unsubcribe = auth.onAuthStateChanged((authUser) => {
+       if (authUser) {
+       dispatch({
+         type: "SET_USER",
+         user: authUser
+       })
+       } else {
+         dispatch({
+           type: "SET_USER",
+           user: null
+         })
+       }
+     })
+     return () => unsubcribe();
+   }, [dispatch])
 
 
   return (
@@ -22,7 +49,6 @@ function App() {
         <Switch>
           <Route path="/timeline">
             <Header
-              user={user}
               setModalOpen={setModalOpen}
               setModalType={setModalType}
             />
@@ -31,15 +57,13 @@ function App() {
               setModalOpen={setModalOpen}
               modalType={modalType}
               setModalType={setModalType}
-              user={user}
-              setUser={setUser}
+              
             />
 
-            <Timeline user={user} />
+            <Timeline  />
           </Route>
           <Route path="/chat">
             <Header
-              user={user}
               setModalOpen={setModalOpen}
               setModalType={setModalType}
             />
@@ -48,15 +72,12 @@ function App() {
               setModalOpen={setModalOpen}
               modalType={modalType}
               setModalType={setModalType}
-              user={user}
-              setUser={setUser}
             />
-
-            <Chat user={user} />
+            <Chat  />
           </Route>
           <Route path="/profile">
             <Header
-              user={user}
+              
               setModalOpen={setModalOpen}
               setModalType={setModalType}
             />
@@ -65,15 +86,13 @@ function App() {
               setModalOpen={setModalOpen}
               modalType={modalType}
               setModalType={setModalType}
-              user={user}
-              setUser={setUser}
+              
             />
 
-            <Profile user={user} />
+            <ProfilePage  />
           </Route>
           <Route path="/saved">
             <Header
-              user={user}
               setModalOpen={setModalOpen}
               setModalType={setModalType}
             />
@@ -82,15 +101,11 @@ function App() {
               setModalOpen={setModalOpen}
               modalType={modalType}
               setModalType={setModalType}
-              user={user}
-              setUser={setUser}
             />
-
-            <Timeline user={user} />
+            <Timeline  />
           </Route>
           <Route path="/saved">
             <Header
-              user={user}
               setModalOpen={setModalOpen}
               setModalType={setModalType}
             />
@@ -99,15 +114,13 @@ function App() {
               setModalOpen={setModalOpen}
               modalType={modalType}
               setModalType={setModalType}
-              user={user}
-              setUser={setUser}
             />
 
-            <Saved user={user} />
+            <Saved  />
           </Route>
           <Route path="/">
             <Header
-              user={user}
+              
               setModalOpen={setModalOpen}
               setModalType={setModalType}
             />
@@ -116,14 +129,10 @@ function App() {
               setModalOpen={setModalOpen}
               modalType={modalType}
               setModalType={setModalType}
-              user={user}
-              setUser={setUser}
             />
-
-            <Timeline user={user} />
+            <Timeline  />
           </Route>
         </Switch>
-
       </div>
     </Router>
   );

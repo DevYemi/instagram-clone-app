@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import './cssStyles/modal.css'
 import Modal from '@material-ui/core/Modal';
 import { Button, Input } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { auth } from './firebase'
 
 function getModalStyle() {
@@ -26,26 +26,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function GetModal({ modalOpen, setModalOpen, user, setUser, setModalType, modalType }) {
+function GetModal({ modalOpen, setModalOpen, setModalType, modalType }) {
     const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
 
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((authUser) => {
-            if (authUser) {
-                setUser(authUser);
-            } else {
-                setUser(null)
-            }
-        })
-
-        return () => {
-            unsubscribe();
-        }
-    }, [user, username, setUser])
 
     function signUp(e) {
         e.preventDefault();

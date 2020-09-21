@@ -2,7 +2,10 @@ import React from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import './cssStyles/sidebar.css'
 import { Link } from 'react-router-dom'
-function Sidebar({ user }) {
+import {useStateValue} from './StateProvider'
+
+function Sidebar() {
+  const [{user}] = useStateValue();
     return (
         <div className="asideWrapper">
             <div className="sidebar">

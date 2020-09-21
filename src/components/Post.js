@@ -10,9 +10,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 import TurnedInNotSharpIcon from '@material-ui/icons/TurnedInNotSharp';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import { useStateValue } from './StateProvider'
 
 function Post(props) {
-    const { postImage, userName = "Anonymous", caption, avatar, postId, user } = props
+    const { postImage, userName = "Anonymous", caption, avatar, postId } = props
+    const [{ user }] = useStateValue();
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState("");
     const [liked, setLiked] = useState(false);

@@ -1,5 +1,6 @@
 import React from 'react'
 import './cssStyles/header.css'
+import { Link } from 'react-router-dom'
 import { auth } from './firebase'
 import { Button } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar'
@@ -12,9 +13,11 @@ import ExploreOutlinedIcon from '@material-ui/icons/ExploreOutlined';
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
+import { useStateValue } from './StateProvider'
 
 
-function Header({ user, setModalOpen, setModalType }) {
+function Header({ setModalOpen, setModalType }) {
+  const [{ user }] = useStateValue();
   const handleLogEntry = (type) => {
     switch (type) {
       case "out":
@@ -41,7 +44,9 @@ function Header({ user, setModalOpen, setModalType }) {
     <header>
       <div className="header">
         <div className="header__column1">
-          <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" alt="logo" className="header__logo" />
+          <Link to='/'>
+            <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" alt="logo" className="header__logo" />
+          </Link>
         </div>
         <div className="header__column2">
           <div id="header__input">
@@ -62,7 +67,7 @@ function Header({ user, setModalOpen, setModalType }) {
 
 
           {user ? <Button className="header__btn" onClick={() => handleLogEntry("out")}>Log out</Button>
-            : <div className= "header__btns"><Button className="header__btn" onClick={() => handleSignUp()}>Sign Up</Button>
+            : <div className="header__btns"><Button className="header__btn" onClick={() => handleSignUp()}>Sign Up</Button>
               <Button className="header__btn" onClick={() => handleLogEntry("in")}>Log In</Button> </div>}
         </div>
       </div>
