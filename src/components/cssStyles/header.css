@@ -26,7 +26,10 @@ header {
   }
   .header__search {
     margin: 0 5em;
-    padding: 2px 23px;
+    border: 1px solid lightgray;
+    padding: 5px 23px;
+    background-color: #d3d3d321;
+    border-radius: 3px;
   }
   .icons {
     margin: 0 .5em !important;
@@ -43,7 +46,43 @@ header {
   .header__avatar {
     height: 23px !important;
     width: 23px !important;
+    cursor: pointer;
   }
+  .header__avatarLinks {
+    display: flex;
+    display: none;
+    flex-direction: column;
+    padding: 1em;
+    position: absolute;
+    width: 209px;
+    top: 50px;
+    right: -25px;
+    background-color: white;
+    box-shadow: 1px 1px 9px 1px #8888 ;
+    border-radius: 5px;
+  }
+  .header__avatarWrapper {
+    position: relative;
+  }
+  .header__avatarLinks a {
+    color: black;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin: .5em 0;
+  }
+  .header__avatarLinks a:last-of-type {
+    padding-bottom: 1em;
+    border-bottom: 1px solid black
+  }
+  #header__avatarLinks_indicator {
+   position: absolute !important;
+   color: #c3baba;
+   top: -17px;
+   z-index: -1;
+   left: 162px;
+  }
+
 
   @media (max-width: 425px) {
     #header__input{

@@ -14,6 +14,10 @@ import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutline
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 import { useStateValue } from './StateProvider'
+import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
+import BookmarkBorderSharpIcon from '@material-ui/icons/BookmarkBorderSharp';
+import ChangeHistoryOutlinedIcon from '@material-ui/icons/ChangeHistoryOutlined';
 
 
 function Header({ setModalOpen, setModalType }) {
@@ -36,10 +40,25 @@ function Header({ setModalOpen, setModalType }) {
 
   }
 
-  const handleSignUp = (type) => {
-    setModalOpen(true);
-    setModalType("signUp")
-  }
+  // const handleSignUp = (type) => {
+  //   setModalOpen(true);
+  //   setModalType("signUp")
+  // }
+
+    window.addEventListener("click", (event) => {
+      let headerAvatarWrapper = document.querySelector(".header__avatarWrapper");
+      let avatarLinks = document.querySelector(".header__avatarLinks");
+      let insideAvatarWrapper = headerAvatarWrapper.contains(event.target);
+      let insideAvatarLinks = avatarLinks.contains(event.target)
+       if ((insideAvatarLinks && insideAvatarWrapper) || !insideAvatarWrapper){
+        avatarLinks.style.display = "none"
+        console.log("move")
+      }else if (insideAvatarWrapper) {
+        avatarLinks.style.display = "flex"
+        console.log("run")
+      }
+    })
+
   return (
     <header>
       <div className="header">
@@ -59,16 +78,34 @@ function Header({ setModalOpen, setModalType }) {
           <SendOutlinedIcon className="icons header__sendIcon" />
           <ExploreOutlinedIcon className="icon header__exploreIcon" />
           <FavoriteBorderOutlinedIcon className="icons header__heartIcon" />
-          <Avatar
-            className='header__avatar'
-            alt={user?.displayName || "Anonymous"}
-            src={user?.avatar}
-          />
+          <div className="header__avatarWrapper">
+            <Avatar
+              className='header__avatar'
+              alt={user?.displayName || "Anonymous"}
+              src={user?.avatar}
+            />
+            <div className="header__avatarLinks">
+              <ChangeHistoryOutlinedIcon id="header__avatarLinks_indicator" />
+              <Link to="/profile">
+                <AccountBoxOutlinedIcon />
+                <span>Profile</span>
+              </Link>
+              <Link to="/saved">
+                <BookmarkBorderSharpIcon />
+                <span>Saved</span>
+              </Link>
+              <Link to="/profile">
+                <SettingsOutlinedIcon />
+                <span>Settings</span>
+              </Link>
+              <Button className="header__btn" onClick={() => handleLogEntry("out")}>Log out</Button>
+            </div>
+          </div>
 
 
-          {user ? <Button className="header__btn" onClick={() => handleLogEntry("out")}>Log out</Button>
+          {/* {user ? <Button className="header__btn" onClick={() => handleLogEntry("out")}>Log out</Button>
             : <div className="header__btns"><Button className="header__btn" onClick={() => handleSignUp()}>Sign Up</Button>
-              <Button className="header__btn" onClick={() => handleLogEntry("in")}>Log In</Button> </div>}
+              <Button className="header__btn" onClick={() => handleLogEntry("in")}>Log In</Button> </div>} */}
         </div>
       </div>
     </header>
