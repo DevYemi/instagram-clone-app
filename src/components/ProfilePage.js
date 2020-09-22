@@ -11,7 +11,6 @@ import { useStateValue } from './StateProvider'
 
 function ProfilePage(props) {
     const [{ user, posts }] = useStateValue();
-    console.log(posts)
     return (
         <div className="profilePage">
             <section className="profilePage__sec1">

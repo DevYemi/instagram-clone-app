@@ -1,0 +1,27 @@
+footer {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 2em 2em 2em;
+    margin-top: 5em;
+    flex-wrap: wrap;
+    font-size: small;
+}
+.footer__helpLinks a {
+text-decoration: none;
+color: #275681;
+}
+.footer__helpLinks {
+    display: flex;
+    flex-wrap: wrap;
+}
+.footer__helpLink {
+    margin: 0 .5em;
+}
+.footer__text {
+    color: rgb(170, 165, 165);
+}
+@media (max-width: 425px) {
+    .footer__text {
+        margin-top: 1em;
+    }
+}

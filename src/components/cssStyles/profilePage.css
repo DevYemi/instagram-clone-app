@@ -61,10 +61,14 @@
 .navLink {
     display: flex;
     align-items: center;
+    font-size: 12px;
+}
+.navLink_icon {
+    font-size: 1rem !important;
 }
 .navLink p {
     margin-left: .3em;
-    letter-spacing: 1px;
+    letter-spacing: .5px;
 }
 .profilePage__post {
     margin-top: 1em;
@@ -75,6 +79,7 @@
 .profilePage__gridItem {
     width: 100%;
     max-height: 300px;
+    overflow: hidden;
 }
 .profilePage__gridItem img {
     width: 100%;

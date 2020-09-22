@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './cssStyles/header.css'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { auth } from './firebase'
 import { Button } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar'
@@ -21,50 +21,38 @@ import ChangeHistoryOutlinedIcon from '@material-ui/icons/ChangeHistoryOutlined'
 
 
 function Header({ setModalOpen, setModalType }) {
+  const history = useHistory();
   const [{ user }] = useStateValue();
-  const handleLogEntry = (type) => {
-    switch (type) {
-      case "out":
-        if (user) {
-          auth.signOut()
-        }
-        break;
-      case "in":
-        setModalOpen(true);
-        setModalType("logIn")
-        break;
-
-      default:
-        break;
-    }
-
+  const handleLogOut = () => {
+      auth.signOut();
+      history.push("/login");
   }
 
-  // const handleSignUp = (type) => {
-  //   setModalOpen(true);
-  //   setModalType("signUp")
-  // }
 
-    window.addEventListener("click", (event) => {
-      let headerAvatarWrapper = document.querySelector(".header__avatarWrapper");
-      let avatarLinks = document.querySelector(".header__avatarLinks");
-      let insideAvatarWrapper = headerAvatarWrapper.contains(event.target);
-      let insideAvatarLinks = avatarLinks.contains(event.target)
-       if ((insideAvatarLinks && insideAvatarWrapper) || !insideAvatarWrapper){
-        avatarLinks.style.display = "none"
-        console.log("move")
-      }else if (insideAvatarWrapper) {
-        avatarLinks.style.display = "flex"
-        console.log("run")
-      }
-    })
+useEffect(()=>{
+  const closeDiv = (event) => {
+    let headerAvatarWrapper = document.querySelector(".header__avatarWrapper");
+    let avatarLinks = document.querySelector(".header__avatarLinks");
+    console.log(event.target);
+    let insideAvatarWrapper = headerAvatarWrapper.contains(event.target);
+    let insideAvatarLinks = avatarLinks.contains(event.target)
+    if ((insideAvatarLinks && insideAvatarWrapper) || !insideAvatarWrapper) {
+      avatarLinks.style.display = "none"
+    } else if (insideAvatarWrapper) {
+      avatarLinks.style.display = "flex"
+    }
+  }
+  window.addEventListener("click", closeDiv )
+  return () => {window.removeEventListener("click", closeDiv)}
+},[])
+
 
   return (
     <header>
       <div className="header">
         <div className="header__column1">
           <Link to='/'>
-            <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" alt="logo" className="header__logo" />
+            <img src="https://logo-logos.com/wp-content/uploads/2016/10/Instagram_logo_wordmark_logotype.png" alt="logo" className="header__logo" />
           </Link>
         </div>
         <div className="header__column2">
@@ -98,14 +86,10 @@ function Header({ setModalOpen, setModalType }) {
                 <SettingsOutlinedIcon />
                 <span>Settings</span>
               </Link>
-              <Button className="header__btn" onClick={() => handleLogEntry("out")}>Log out</Button>
+              <Button className="header__btn" onClick={handleLogOut}>Log out</Button>
             </div>
           </div>
 
-
-          {/* {user ? <Button className="header__btn" onClick={() => handleLogEntry("out")}>Log out</Button>
-            : <div className="header__btns"><Button className="header__btn" onClick={() => handleSignUp()}>Sign Up</Button>
-              <Button className="header__btn" onClick={() => handleLogEntry("in")}>Log In</Button> </div>} */}
         </div>
       </div>
     </header>

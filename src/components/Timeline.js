@@ -9,7 +9,7 @@ import {useStateValue} from './StateProvider'
 
 function Timeline() {
   const [{user, posts}] = useStateValue();
-  console.log(posts)
+  console.log(typeof user, user)
 
 
   return (
@@ -39,5 +39,5 @@ function Timeline() {
   );
 }
 
-export default Timeline;
+export default React.memo(Timeline);
 

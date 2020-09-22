@@ -22,7 +22,7 @@ header {
   }
   .header__logo {
     object-fit: contain;
-    height: fit-content;
+    width: 120px;
   }
   .header__search {
     margin: 0 5em;
