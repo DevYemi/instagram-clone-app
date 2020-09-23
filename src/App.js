@@ -1,4 +1,4 @@
-import React, {useEffect } from 'react';
+import React, {useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { db, auth } from './components/firebase'
@@ -8,13 +8,14 @@ import Timeline from './components/Timeline';
 import Footer from './components/Footer'
 import Saved from './components/Saved'
 import Chat from './components/Chat'
+import SignUp from './components/SignUp'
 import ProfilePage from './components/ProfilePage'
 import { useStateValue } from './components/StateProvider'
 
 
-
 function App() {
   const [{ user }, dispatch] = useStateValue();
+  const [refresh, setRefresh] = useState(false)
 
   useEffect(() => {
     db.collection("posts").orderBy("timeStamp", "desc").onSnapshot(snapshot => {
@@ -47,14 +48,6 @@ function App() {
     <Router>
       <div className="app">
         <Switch>
-          {user ? (<Route path="/">
-            <Header
-            />
-            <Timeline />
-          </Route>) : (<Route path="/">
-            <Login />
-            <Footer />
-          </Route>) }
           <Route path="/login">
             <Login />
             <Footer />
@@ -62,7 +55,7 @@ function App() {
           <Route path="/timeline">
             <Header
             />
-            <Timeline />
+            <Timeline refresh={refresh} />
             <Footer />
           </Route>
           <Route path="/chat">
@@ -76,12 +69,25 @@ function App() {
             <ProfilePage />
             <Footer />
           </Route>
+          <Route path="/signup">
+            <SignUp setRefresh={setRefresh} />
+            <Footer />
+          </Route>
           <Route path="/saved">
             <Header
             />
             <Saved />
             <Footer />
           </Route>
+          {user ? (<Route path="/">
+            <Header
+            />
+            <Timeline />
+            <Footer />
+          </Route>) : (<Route path="/">
+            <Login />
+            <Footer />
+          </Route>) }
         </Switch>
       </div>
     </Router>

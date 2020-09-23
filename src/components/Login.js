@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react'
 import './cssStyles/login.css'
 import { Link, useHistory } from 'react-router-dom'
 import { auth } from './firebase'
-import { useStateValue } from './StateProvider'
 
 
 
 
 function Login() {
-    const [, dispatch] = useStateValue();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const history = useHistory();
 
     useEffect(() => {
@@ -42,6 +41,17 @@ function Login() {
             .catch(e => { alert(e);})
 
     }
+    const showPw = (e) =>{
+        e.preventDefault();
+        let input = document.querySelector(".login__sec1 > form > div > .login__formInput")
+        if (showPassword) {
+            input.type = "password"
+            setShowPassword(false)
+        }else {
+            input.type = "text"
+            setShowPassword(true)
+        }
+    }
     return (
         <div className="login">
             <section className="login__mainSec">
@@ -69,7 +79,7 @@ function Login() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="login__formInput"
                                     placeholder="Password" />
-                                <input type="button" className="login__showPassword" value="Show" />
+                                <button onClick={showPw} className="login__showPassword">{showPassword ? "Hide" : "Show"}</button>
                             </div>
                             <button onClick={logIn} className="login__submitBtn" type="submit">Log In</button>
                         </form>

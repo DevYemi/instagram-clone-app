@@ -6,6 +6,7 @@ import {useStateValue} from './StateProvider'
 
 function Sidebar() {
   const [{user}] = useStateValue();
+
     return (
         <div className="asideWrapper">
             <div className="sidebar">

@@ -19,7 +19,7 @@ function Post(props) {
     const [comment, setComment] = useState("");
     const [liked, setLiked] = useState(false);
     const [totalLikes, setTotalLikes] = useState();
-    const [likeId, setLikeId] = useState("")
+    const [likeId, setLikeId] = useState("");
 
     useEffect(() => {
         let unsubcribeComment;
@@ -150,8 +150,8 @@ function Post(props) {
             {totalLikes && <p className="post__likeFigure">{`${totalLikes?.length} likes`}</p>}
             <h4 className="post__text"><strong>  {userName}</strong>{` ${caption}`}</h4>
             <div className="post__comments">
-                {comments.map(comment =>
-                    (<p>
+                {comments.map((comment, index) =>
+                    (<p key={index}>
                         <strong>{comment.username}</strong>  {comment.text}
                     </p>)
                 )

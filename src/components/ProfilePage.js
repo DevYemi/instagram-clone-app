@@ -64,7 +64,7 @@ function ProfilePage(props) {
                     {posts.length > 0 &&
                         posts.map(({ post, id }) => {
                             return (
-                                <div className="profilePage__gridItem">
+                                <div key={id} className="profilePage__gridItem">
                                     <img src={post.postImage} alt="post" />
                                 </div>
                             )

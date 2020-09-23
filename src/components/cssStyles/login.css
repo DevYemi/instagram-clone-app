@@ -50,13 +50,14 @@ align-items: center;
 }
 .login__showPassword {
     border-radius: 0 3px 3px 0;
+    outline: none;
 }
 .login__form > input {
     width: 100%;
     border-radius: 3px;
 }
 .login__formInput, .login__showPassword  {
-    padding: .8em;
+    padding: .6em;
     border: .5px solid lightgray;
 }
 

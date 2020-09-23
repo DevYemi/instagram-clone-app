@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import './cssStyles/Timeline.css';
 import Post from './Post'
 import ImageUpload from './imageUpload'
@@ -7,10 +7,15 @@ import {useStateValue} from './StateProvider'
 
 
 
-function Timeline() {
+function Timeline({refresh}) {
   const [{user, posts}] = useStateValue();
-  console.log(typeof user, user)
+  console.log( user);
+ useEffect(() => {
+   if (refresh) {
+    window.location.reload();
+   }
 
+ }, [refresh])
 
   return (
     <div className="wrapper">
