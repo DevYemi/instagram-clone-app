@@ -1,8 +1,9 @@
 import { Button } from '@material-ui/core';
 import './cssStyles/imageUpload.css'
 import React, { useState } from 'react'
-import { storage, db } from './firebase'
-import firebase from 'firebase'
+import { storage } from './firebase'
+import { setNewUploadedPostToDb } from './get&setDatato&FroDb'
+
 
 function ImageUpload({ username }) {
     const [image, setImage] = useState(null);
@@ -16,7 +17,7 @@ function ImageUpload({ username }) {
     }
     const handleUpload = () => {
         if (image) {
-            const uploadTask = storage.ref(`images/${image.name}`).put(image)
+            const uploadTask = storage.ref(`images/${image.name}`).put(image) // saved new image to storage
             uploadTask.on("state_changed",
                 (snapshot) => {
                     const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
@@ -28,12 +29,7 @@ function ImageUpload({ username }) {
                         .child(image.name)
                         .getDownloadURL()
                         .then(url => {
-                            db.collection("posts").add({
-                                timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-                                caption: caption,
-                                postImage: url,
-                                username: username,
-                            })
+                            setNewUploadedPostToDb(caption, url, username);
                             setProgress(0);
                             setImage(null);
                             setCaption("");

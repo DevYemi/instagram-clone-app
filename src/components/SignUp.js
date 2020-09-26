@@ -2,49 +2,54 @@ import React, { useState, useEffect } from 'react'
 import './cssStyles/signUp.css'
 import { Link, useHistory } from 'react-router-dom'
 import {auth} from './firebase'
+import { sendNewUserInfoToDb } from './get&setDatato&FroDb';
 
-function SignUp({setRefresh}) {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [fullName, setFullName] = useState("");
-    const [username, setUsername] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const history = useHistory();
+function SignUp({ setRefresh, setNewUser }) {
+    const [email, setEmail] = useState(""); // keeps state for inputed user email
+    const [password, setPassword] = useState(""); // keeps state for inputed user password
+    const [fullName, setFullName] = useState(""); // keeps state for inputed user fullname
+    const [username, setUsername] = useState(""); // keeps state for inputed user username
+    const [showPassword, setShowPassword] = useState(false); // keeps state if password is showed or not
+    const history = useHistory(); // a fucition from react-router-dom so as to be able to redirect to the timeline when a new user sign up
 
-    useEffect(() =>{
+    useEffect(() => { // changes sign up btn style if all input field are filled
         let btnColor = document.querySelector(".signup__submitBtn");
-        if(email && password && fullName && username) {
+        if (email && password && fullName && username) {
             btnColor.style.backgroundColor = "#0095F6"
-        }else {
+        } else {
             btnColor.style.backgroundColor = "#B2DFFC"
         }
-    },[email,password, fullName,username])
+    }, [email, password, fullName, username])
 
-    const signUp = (e) => {
-         e.preventDefault()
+    const signUp = (e) => { // sign up a new user if all input are filled and redirect to the timeline page
+        e.preventDefault()
         if (email && password && fullName && username) {
             auth.createUserWithEmailAndPassword(email, password)
-            .then((authUser) => {
-                setEmail("");
-                setUsername("");
-                setFullName("");
-                setPassword("");
-                setRefresh(true);
-                  history.push("/timeline")
-                return authUser.user.updateProfile({
-                    displayName: username
+                .then((authUser) => {
+                    sendNewUserInfoToDb(authUser, fullName, username);
+                    setEmail("");
+                    setUsername("");
+                    setFullName("");
+                    setPassword("");
+                    setRefresh(true);
+                    setNewUser(true);
+                    return authUser.user.updateProfile({
+                        displayName: username
+                    })
+                }).then(authUser => {
+                    console.log(authUser)
+                    history.push("/timeline") // redirect to timeline page
                 })
-            })
-            .catch((error) => alert(error.message))
+                .catch((error) => alert(error.message))
         }
     }
-    const showPw = (e) =>{
+    const showPw = (e) => { // shows or hide user password
         e.preventDefault();
         let input = document.querySelector(".signup__sec1 > form > div > .signup__formInput")
         if (showPassword) {
             input.type = "password"
             setShowPassword(false)
-        }else {
+        } else {
             input.type = "text"
             setShowPassword(true)
         }

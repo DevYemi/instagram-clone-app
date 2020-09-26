@@ -1,6 +1,7 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import {getOnlineUserInfo, getFollowers, getFollowing, getTimelinePosts, getUserPosts} from './components/get&setDatato&FroDb'
 import { db, auth } from './components/firebase'
 import Header from './components/Header'
 import Login from './components/Login'
@@ -14,19 +15,32 @@ import { useStateValue } from './components/StateProvider'
 
 
 function App() {
-  const [{ user }, dispatch] = useStateValue();
-  const [refresh, setRefresh] = useState(false)
+  const [{ user }, dispatch] = useStateValue(); // current logged in user
+  const [refresh, setRefresh] = useState(false); // keeps state if a new user just sign up, refresh the timeline component to get the current logged in user
+  const [newUser, setNewUser] = useState(false);
 
-  useEffect(() => {
-    db.collection("posts").orderBy("timeStamp", "desc").onSnapshot(snapshot => {
-      dispatch({
-        type: "SET_POSTS",
-        posts: snapshot.docs.map(doc => { return { post: doc.data(), id: doc.id } })
+  useEffect(() => { // gets posts from db and set it to state
+    let unsubcribeFollower;
+    let unsubcribePosts;
+    let unsubcribeTimelinePosts;
+    let unsubcribeFollowing;
+    console.log(newUser);
+    if (!newUser && user) {
+      getOnlineUserInfo(user, dispatch);
+      unsubcribeFollower = getFollowers(user, dispatch);
+      unsubcribePosts = getUserPosts(user, dispatch);
+      unsubcribeTimelinePosts = getFollowing(user, dispatch);
+      unsubcribeFollowing = getTimelinePosts(user, dispatch);
+    } else {
+      if (user) {
+        db.collection("totalUsers")
+          .doc(user.email)
+          .set({ user: user.email })
       }
-      )
-    })
-  }, [dispatch])
-  useEffect(() => {
+    }
+    return () => { if (user) { unsubcribeFollower(); unsubcribePosts(); unsubcribeFollowing(); unsubcribeTimelinePosts() } }
+  }, [dispatch, user, newUser])
+  useEffect(() => { // event listener if there a change in the current user (logIn & signOut)
     const unsubcribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         dispatch({
@@ -70,7 +84,7 @@ function App() {
             <Footer />
           </Route>
           <Route path="/signup">
-            <SignUp setRefresh={setRefresh} />
+            <SignUp setRefresh={setRefresh} setNewUser={setNewUser} />
             <Footer />
           </Route>
           <Route path="/saved">
@@ -87,7 +101,7 @@ function App() {
           </Route>) : (<Route path="/">
             <Login />
             <Footer />
-          </Route>) }
+          </Route>)}
         </Switch>
       </div>
     </Router>

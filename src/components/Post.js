@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './cssStyles/post.css'
+import {getCommentsFromDb, getLikesFromDb, setCommentToDb, setLikesToDb} from './get&setDatato&FroDb'
 import Avatar from '@material-ui/core/Avatar'
-import { db } from './firebase'
-import firebase from 'firebase'
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import { red } from '@material-ui/core/colors';
@@ -13,45 +12,24 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { useStateValue } from './StateProvider'
 
 function Post(props) {
-    const { postImage, userName = "Anonymous", caption, avatar, postId } = props
-    const [{ user }] = useStateValue();
-    const [comments, setComments] = useState([]);
-    const [comment, setComment] = useState("");
-    const [liked, setLiked] = useState(false);
-    const [totalLikes, setTotalLikes] = useState();
-    const [likeId, setLikeId] = useState("");
-
-    useEffect(() => {
+    const { postImage, username, caption, avatar, postId, posterEmail } = props
+    const [{ user }] = useStateValue(); // current logged in user
+    const [comments, setComments] = useState([]); // total comment from the db
+    const [comment, setComment] = useState(""); // current inputed comment by user
+    const [liked, setLiked] = useState(false); // keep state if a post is liked by current logged in user
+    const [totalLikes, setTotalLikes] = useState(); // keep state on total like on a post
+    const [likeId, setLikeId] = useState(""); // keep state of the id of the user that like a post so it can later be deleted in the db
+    useEffect(() => { //gets comments and likes from db
         let unsubcribeComment;
         let unsubscribeLikes
         if (postId) {
-            unsubcribeComment = db
-                .collection("posts")
-                .doc(postId)
-                .collection("comments")
-                .onSnapshot(snapshot => {
-                    setComments(snapshot.docs.map(doc => doc.data()))
-                });
-            unsubscribeLikes = db
-                .collection("posts")
-                .doc(postId)
-                .collection("totalLikes")
-                .onSnapshot(snapshot => {
-                    let array = snapshot.docs.map(doc => ({ data: doc.data(), id: doc.id }));
-                    setTotalLikes(array);
-                    array.forEach((totalLike) => {
-                        totalLike.data.like === user?.email && setLikeId(totalLike.id);
-                    })
-
-
-
-                });
+            unsubcribeComment = getCommentsFromDb(posterEmail,postId,setComments)
+            unsubscribeLikes = getLikesFromDb(posterEmail,postId,setTotalLikes,user,setLikeId)
         }
         return () => { unsubcribeComment(); unsubscribeLikes(); }
-    }, [postId, user])
-    useEffect(() => {
+    }, [postId, user, posterEmail])
+    useEffect(() => { // checks if current logged in user as previously liked the post
         if (totalLikes) {
-            console.log(totalLikes)
             for (let i = 0; i < totalLikes.length; i++) {
                 const totalLike = totalLikes[i];
                 if (totalLike.data.like === user?.email) {
@@ -65,59 +43,18 @@ function Post(props) {
         }
     }, [totalLikes, user])
 
-    const postComment = (e) => {
+    const postComment = (e) => { // post comment to db
         e.preventDefault()
-        if (userName === "Anonymous") {
+        if (!user) {
             alert("Please Log In To Be Able To Comment On A Post")
         } else {
-            db.collection('posts')
-                .doc(postId)
-                .collection('comments')
-                .add({
-                    text: comment,
-                    username: user?.displayName || "Anonymous",
-                    timeStamp: firebase.firestore.FieldValue.serverTimestamp()
-                })
+            setCommentToDb(posterEmail,postId,user,comment)
         }
         setComment("");
     }
-    const handleLike = (e, eventType) => {
+    const handleLike = (e, eventType) => { // add and remove like from db
         e.preventDefault();
-        switch (eventType) {
-            case "ADD":
-                if (userName === "Anonymous") {
-                    alert("Please Log In To Be Able To Like A Post")
-                } else {
-                    db.collection('posts')
-                        .doc(postId)
-                        .collection('totalLikes')
-                        .add({ like: user.email });
-                    console.log(totalLikes);
-                    setLiked(true);
-                }
-
-                break;
-            case "REMOVE":
-                totalLikes.forEach((totalLike) => {
-                    console.log(totalLike.data.like === user?.email)
-                    totalLike.data.like === user?.email && setLikeId(totalLike.id);
-                })
-                console.log(likeId)
-                if (likeId) {
-                    db.collection('posts')
-                        .doc(postId)
-                        .collection('totalLikes')
-                        .doc(likeId)
-                        .delete();
-                    setLiked(false);
-                    setLikeId("");
-                }
-
-                break;
-
-            default:
-                break;
-        }
+        setLikesToDb(eventType,user,posterEmail,postId,totalLikes,likeId,setLiked,setLikeId)
     }
 
 
@@ -127,10 +64,10 @@ function Post(props) {
                 <div className="post__header">
                     <Avatar
                         className='post__avatar'
-                        alt={userName}
+                        alt={username}
                         src={avatar}
                     />
-                    <h3>{userName}</h3>
+                    <h3>{username}</h3>
                 </div>
                 <MoreHorizIcon />
             </div>
@@ -148,7 +85,7 @@ function Post(props) {
                 </div>
             </div>
             {totalLikes && <p className="post__likeFigure">{`${totalLikes?.length} likes`}</p>}
-            <h4 className="post__text"><strong>  {userName}</strong>{` ${caption}`}</h4>
+            <h4 className="post__text"><strong>  {username}</strong>{` ${caption}`}</h4>
             <div className="post__comments">
                 {comments.map((comment, index) =>
                     (<p key={index}>

@@ -8,12 +8,12 @@ import {useStateValue} from './StateProvider'
 
 
 function Timeline({refresh}) {
-  const [{user, posts}] = useStateValue();
-  console.log( user);
- useEffect(() => {
-   if (refresh) {
-    window.location.reload();
-   }
+  const [{user, timelinePosts}] = useStateValue(); // current user and user timelinePosts
+
+ useEffect(() => { // refreshes component if a new user just sign up to get user info
+  //  if (refresh) {
+  //   window.location.reload();
+  //  }
 
  }, [refresh])
 
@@ -22,14 +22,15 @@ function Timeline({refresh}) {
       <div className="timeline">
         <div className="timelineCol1">
 
-          {posts.length > 0 &&
-            posts.map(({ post, id }) => <Post
+          {timelinePosts.length > 0 &&
+            timelinePosts.map(({ timelinePosts, id, posterEmail, posterAvi }) => <Post
               key={id}
               postId={id}
-              avatar={post.avatar}
-              postImage={post.postImage}
-              userName={user?.displayName}
-              caption={post.caption}
+              posterEmail={posterEmail}
+              avatar={posterAvi}
+              postImage={timelinePosts?.postImage}
+              username={timelinePosts?.username}
+              caption={timelinePosts?.caption}
             />)
           }
 
@@ -38,7 +39,7 @@ function Timeline({refresh}) {
           <Sidebar/>
         </div>
       </div>
-      {user?.displayName ? <ImageUpload username={user.displayName} />
+      {user ? <ImageUpload username={user?.displayName} />
         : <h3>You nedd to sign in to be able to Upload</h3>}
     </div>
   );

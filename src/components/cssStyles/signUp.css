@@ -94,12 +94,15 @@ input:focus {
 .signup__showPassword {
     border: .5px solid lightgray;
     outline: none;
+    cursor: pointer;
 }
 .signup__showPassword {
     border-radius: 0 3px 3px 0;
 }
 .signup__submitBtn {
     padding: .5em;
+    cursor: pointer;
+    outline: none;
     width: 100%;
     border: none;
     border-radius: 4px;

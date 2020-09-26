@@ -7,10 +7,29 @@
     align-items: center;
     margin-bottom: 4em;
 }
+.profilePage__avatar_wrapper {
+    margin: 0 5em 0 3em !important;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    width: 130px;
+    height: 130px;
+}
+.profilePage__avatar_wrapper > input {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    width: 130px;
+    height: 130px;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+
+}
 .profilePage__avatar {
     width: 130px !important;
     height: 130px !important;
-    margin: 0 5em 0 3em !important;
 }
 .pP__detail_row1 {
     display: flex;

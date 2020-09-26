@@ -7,12 +7,12 @@ import { auth } from './firebase'
 
 
 function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const history = useHistory();
+    const [email, setEmail] = useState(""); // keeps state for inputed user email
+    const [password, setPassword] = useState(""); // keeps state for inputed user password
+    const [showPassword, setShowPassword] = useState(false); // keeps state if password is showed or not
+    const history = useHistory(); // a fucition from react-router-dom so as to be able to redirect to the timeline when a new user sign up
 
-    useEffect(() => {
+    useEffect(() => { // Animate frontend img
         let interval = setInterval(() => {
             let loginImg = document.querySelector(".login__img")
             let loginImgArray = Array.from(loginImg.children);
@@ -30,7 +30,7 @@ function Login() {
 
         return () => clearInterval(interval)
     })
-    const logIn = (e) => {
+    const logIn = (e) => { // log in new user and redirect page to timeline
         e.preventDefault();
         setEmail("")
         setPassword("")
@@ -41,7 +41,7 @@ function Login() {
             .catch(e => { alert(e);})
 
     }
-    const showPw = (e) =>{
+    const showPw = (e) =>{ // shows or hide user password
         e.preventDefault();
         let input = document.querySelector(".login__sec1 > form > div > .login__formInput")
         if (showPassword) {

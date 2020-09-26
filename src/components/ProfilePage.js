@@ -8,17 +8,29 @@ import LiveTvOutlinedIcon from '@material-ui/icons/LiveTvOutlined';
 import BookmarkBorderSharpIcon from '@material-ui/icons/BookmarkBorderSharp';
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import { useStateValue } from './StateProvider'
+import { setNewOnlineUserAviToDb } from './get&setDatato&FroDb';
 
 function ProfilePage(props) {
-    const [{ user, posts }] = useStateValue();
+    const [{ user, userPosts, following, followers, onlineUserInfo }] = useStateValue(); // keeps state on current logged in user and userPosts
+
+    const uploadAvi = (e) => {
+        if (e.target.files[0]) {
+            let image = e.target.files[0]
+            setNewOnlineUserAviToDb(image, onlineUserInfo);
+        }
+    }
     return (
         <div className="profilePage">
             <section className="profilePage__sec1">
+                <div className="profilePage__avatar_wrapper">
                 <Avatar
                     className='profilePage__avatar'
+                    title="Change your profile picture"
                     alt={"Change Your Profile Picture"}
-                    src={""}
+                    src={onlineUserInfo?.avatar}
                 />
+                <input title="Change your profile picture" onChange={uploadAvi} type="file" name="" id=""/>
+                </div>
                 <div className="profilePage__detail">
                     <div className="pP__detail_row1">
                         <h3>{user?.displayName}</h3>
@@ -26,9 +38,9 @@ function ProfilePage(props) {
                         <SettingsOutlinedIcon className="profilePage__settinsIcon" />
                     </div>
                     <div className="pP__deatil_row2">
-                        <p className="postNum"><strong>4</strong> Posts</p>
-                        <p className="followerNum"><strong>0</strong> followers</p>
-                        <p className="followingNum"><strong>0</strong> following</p>
+                        <p className="postNum"><strong>{userPosts.length}</strong> Posts</p>
+                        <p className="followerNum"><strong>{followers.length}</strong> followers</p>
+                        <p className="followingNum"><strong>{following.length}</strong> following</p>
                     </div>
                     <h4>{user?.displayName}</h4>
                 </div>
@@ -61,8 +73,8 @@ function ProfilePage(props) {
                     </Link>
                 </div>
                 <div className="profilePage__post">
-                    {posts.length > 0 &&
-                        posts.map(({ post, id }) => {
+                    {userPosts.length > 0 &&
+                        userPosts.map(({ post, id }) => {
                             return (
                                 <div key={id} className="profilePage__gridItem">
                                     <img src={post.postImage} alt="post" />

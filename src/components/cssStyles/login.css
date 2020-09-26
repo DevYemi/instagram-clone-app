@@ -51,6 +51,7 @@ align-items: center;
 .login__showPassword {
     border-radius: 0 3px 3px 0;
     outline: none;
+    cursor: pointer;
 }
 .login__form > input {
     width: 100%;
@@ -66,7 +67,9 @@ align-items: center;
 }
 .login__submitBtn {
     padding: .5em;
+    cursor: pointer;
     width: 100%;
+    outline: none;
     border: none;
     border-radius: 4px;
     background-color: #0095F6;
@@ -143,6 +146,7 @@ align-items: center;
 }
 .login__dash > p {
     margin: 0 1em;
+    font-size: 13px;
     color: #000000b0;
 }
 .firstDash, .secDash {

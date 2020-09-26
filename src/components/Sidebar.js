@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import {useStateValue} from './StateProvider'
 
 function Sidebar() {
-  const [{user}] = useStateValue();
+  const [{user, onlineUserInfo}] = useStateValue();
 
     return (
         <div className="asideWrapper">
@@ -17,8 +17,8 @@ function Sidebar() {
                         src={"me"}
                     />
                     <div className="row1__text">
-                        <h4>{user?.displayName}</h4>
-                        <p>{user?.displayName}</p>
+                        <h4>{onlineUserInfo?.username}</h4>
+                        <p>{onlineUserInfo?.fullname}</p>
                     </div>
                 </div>
                 <div className="sidebar__row2">
