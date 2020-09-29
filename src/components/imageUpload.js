@@ -3,9 +3,11 @@ import './cssStyles/imageUpload.css'
 import React, { useState } from 'react'
 import { storage } from './firebase'
 import { setNewUploadedPostToDb } from './get&setDatato&FroDb'
+import { useStateValue } from './StateProvider';
 
 
-function ImageUpload({ username }) {
+function ImageUpload() {
+    const [{onlineUserInfo}] = useStateValue();
     const [image, setImage] = useState(null);
     const [caption, setCaption] = useState("");
     const [progress, setProgress] = useState(0);
@@ -29,7 +31,7 @@ function ImageUpload({ username }) {
                         .child(image.name)
                         .getDownloadURL()
                         .then(url => {
-                            setNewUploadedPostToDb(caption, url, username);
+                            setNewUploadedPostToDb(caption, url, onlineUserInfo);
                             setProgress(0);
                             setImage(null);
                             setCaption("");

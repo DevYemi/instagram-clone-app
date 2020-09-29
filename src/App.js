@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import {getOnlineUserInfo, getFollowers, getFollowing, getTimelinePosts, getUserPosts} from './components/get&setDatato&FroDb'
-import { db, auth } from './components/firebase'
+import {getOnlineUserInfo, getFollowers, getFollowing, getTimelinePosts, getUserPosts, getSuggestionOnWhoToFollow} from './components/get&setDatato&FroDb'
+import { auth } from './components/firebase'
 import Header from './components/Header'
 import Login from './components/Login'
 import Timeline from './components/Timeline';
@@ -15,31 +15,26 @@ import { useStateValue } from './components/StateProvider'
 
 
 function App() {
-  const [{ user }, dispatch] = useStateValue(); // current logged in user
+  const [{user}, dispatch] = useStateValue(); // current logged in user
   const [refresh, setRefresh] = useState(false); // keeps state if a new user just sign up, refresh the timeline component to get the current logged in user
-  const [newUser, setNewUser] = useState(false);
 
   useEffect(() => { // gets posts from db and set it to state
     let unsubcribeFollower;
     let unsubcribePosts;
     let unsubcribeTimelinePosts;
     let unsubcribeFollowing;
-    console.log(newUser);
-    if (!newUser && user) {
+
+    if (user) {
       getOnlineUserInfo(user, dispatch);
+      getSuggestionOnWhoToFollow(user, dispatch);
       unsubcribeFollower = getFollowers(user, dispatch);
       unsubcribePosts = getUserPosts(user, dispatch);
-      unsubcribeTimelinePosts = getFollowing(user, dispatch);
-      unsubcribeFollowing = getTimelinePosts(user, dispatch);
-    } else {
-      if (user) {
-        db.collection("totalUsers")
-          .doc(user.email)
-          .set({ user: user.email })
-      }
-    }
-    return () => { if (user) { unsubcribeFollower(); unsubcribePosts(); unsubcribeFollowing(); unsubcribeTimelinePosts() } }
-  }, [dispatch, user, newUser])
+      unsubcribeFollowing = getFollowing(user, dispatch);
+      unsubcribeTimelinePosts = getTimelinePosts(user, dispatch);
+    } 
+
+    return () => { if (user) { unsubcribeFollower(); unsubcribePosts(); unsubcribeFollowing(); unsubcribeTimelinePosts();} }
+  }, [dispatch, user])
   useEffect(() => { // event listener if there a change in the current user (logIn & signOut)
     const unsubcribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
@@ -84,7 +79,7 @@ function App() {
             <Footer />
           </Route>
           <Route path="/signup">
-            <SignUp setRefresh={setRefresh} setNewUser={setNewUser} />
+            <SignUp setRefresh={setRefresh} />
             <Footer />
           </Route>
           <Route path="/saved">

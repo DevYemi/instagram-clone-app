@@ -23,8 +23,8 @@ function Timeline({refresh}) {
         <div className="timelineCol1">
 
           {timelinePosts.length > 0 &&
-            timelinePosts.map(({ timelinePosts, id, posterEmail, posterAvi }) => <Post
-              key={id}
+            timelinePosts.map(({ timelinePosts, id, posterEmail, posterAvi }, index) => <Post
+              key={index}
               postId={id}
               posterEmail={posterEmail}
               avatar={posterAvi}
@@ -39,7 +39,7 @@ function Timeline({refresh}) {
           <Sidebar/>
         </div>
       </div>
-      {user ? <ImageUpload username={user?.displayName} />
+      {user ? <ImageUpload />
         : <h3>You nedd to sign in to be able to Upload</h3>}
     </div>
   );

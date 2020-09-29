@@ -3,12 +3,11 @@ import firebase from 'firebase'
 import { storage } from './firebase';
 
 
-export function getOnlineUserInfo(user, dispatch) { // get in info on the current logged in user
+export function getOnlineUserInfo(user, dispatch,) { // get in info on the current logged in user
 
-    let docRef = db.collection("registeredUser").doc(user.email)
+    let docRef = db.collection("registeredUser").doc(user?.email)
     docRef.get().then(doc => {
         if (doc.exists) {
-            console.log(doc.data())
             dispatch({
                 type: "SET_ONLINE_USER_INFO",
                 onlineUserInfo: doc.data()
@@ -17,6 +16,56 @@ export function getOnlineUserInfo(user, dispatch) { // get in info on the curren
             console.log("there is no such data")
         }
     }).catch((e) => { console.log(e) })
+}
+
+export async function getSuggestionOnWhoToFollow(user, dispatch) { //gets other user the onlineUser id following and render them up for follow
+    const getSuggestedUsersDetails = (suggestedUsers) => {
+        suggestedUsers.forEach((suggested) => {
+            let docRef = db.collection("registeredUser").doc(suggested.user)
+            docRef.get().then(doc => {
+                if (doc.exists) {
+                    dispatch({
+                        type: "SET_SUGGESTED_USERS",
+                        SuggestedUser: doc.data()
+                    })
+                } else {
+                    console.log("there is no such data")
+                }
+            }).catch((e) => { console.log(e) })
+        })
+    }
+    const createSuggestions = (userFollowing, totalUsers) => { // filter out the users the onlineUser is following to create suggestions
+        return new Promise((resolve, reject) => {
+            for (let i = 0; i < userFollowing.length; i++) {
+                totalUsers = totalUsers.filter((total) => total.user !== userFollowing[i].followingEmail);
+            }
+            resolve(totalUsers);
+        })
+    }
+    const getFollowing = () => { //get the onlineUser following
+        return new Promise((resolve, reject) => {
+            db.collection("registeredUser")
+                .doc(user?.email)
+                .collection("following")
+                .onSnapshot(snapshot => {
+                    let following = snapshot.docs.map(doc => doc.data())
+                    following ? resolve(following) : reject()
+                })
+        })
+    }
+    const getTotalUser = () => { // gets all the user in the db
+        return new Promise((resolve, reject) => {
+            db.collection("totalUsers")
+                .onSnapshot(snapshot => {
+                    let totalUsers = snapshot.docs.map(doc => doc.data())
+                    totalUsers ? resolve(totalUsers) : reject()
+                })
+        })
+    }
+    let userFollowing = await getFollowing();
+    let totalUsers = await getTotalUser();
+    let suggestedUsers = await createSuggestions(userFollowing, totalUsers);
+    getSuggestedUsersDetails(suggestedUsers)
 }
 
 export function getFollowers(user, dispatch) { // get the followers of the current logged in user
@@ -48,7 +97,7 @@ export function getUserPosts(user, dispatch) {  // get the posts of the current 
 
 export function getFollowing(user, dispatch) {  // get the following of the current logged in user
     return db.collection("registeredUser")
-        .doc(user.email)
+        .doc(user?.email)
         .collection("following")
         .onSnapshot(snapshot => {
             dispatch({
@@ -60,8 +109,8 @@ export function getFollowing(user, dispatch) {  // get the following of the curr
 }
 
 export function getTimelinePosts(user, dispatch) {  // get and compile of the current logged in user timeline post gotten from the user following
-
     const getFollowingPostFromDb = (id) => {
+        
         let avatar;
         let docRef = db.collection("registeredUser").doc(id)
         docRef.get().then(doc => { // Gets the poster Avi from the db
@@ -85,7 +134,7 @@ export function getTimelinePosts(user, dispatch) {  // get and compile of the cu
         }).catch((e) => { console.log(e) })
     }
     return db.collection("registeredUser")
-        .doc(user.email)
+        .doc(user?.email)
         .collection("following")
         .onSnapshot(snapshot => {
             console.log(snapshot.docs.map(doc => { return { post: doc.data(), id: doc.id } }))
@@ -174,13 +223,16 @@ export function setLikesToDb(eventType, user, posterEmail, postId, totalLikes, l
 
 }
 
-export function setNewUploadedPostToDb(caption, url, username) {
-    db.collection("posts").add({
-        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-        caption: caption,
-        postImage: url,
-        username: username,
-    })
+export function setNewUploadedPostToDb(caption, url, onlineUserInfo) { // add new uploaded post to db
+    db.collection("registeredUser")
+        .doc(onlineUserInfo.email)
+        .collection("posts")
+        .add({
+            timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+            caption: caption,
+            postImage: url,
+            username: onlineUserInfo.username,
+        })
 }
 
 export function sendNewUserInfoToDb(authUser, fullName, username) { // sends the new created user data to the db
@@ -193,7 +245,7 @@ export function sendNewUserInfoToDb(authUser, fullName, username) { // sends the
             avatar: ""
         })
 }
-export function setNewOnlineUserAviToDb(image, user) {
+export function setNewOnlineUserAviToDb(image, user, dispatch) {
     const uploadTask = storage.ref(`images/${image.name}`).put(image) // saved new image to storage
     uploadTask.on("state_changed",
         (snapshot) => {
@@ -208,10 +260,55 @@ export function setNewOnlineUserAviToDb(image, user) {
                 .then(url => {
                     let docRef = db.collection("registeredUser").doc(user.email)
                     docRef.get().then(doc => {
-                    docRef.update({
-                        avatar: url
-                    }).then(() =>{alert("Avi successfully updated 🙂🙂🙂")})
+                        docRef.update({
+                            avatar: url
+                        }).then(() => {
+                            getOnlineUserInfo(user, dispatch); // get the latest avi from the db and update it on the profilePage
+                            alert("Avi successfully updated 🙂🙂🙂")
+                        })
                     })
                 })
         })
+}
+export function addNewUserToTotalUserInDb(user) { // add new created user to the totalUser in db
+    db.collection("totalUsers")
+        .doc(user.email)
+        .set({ user: user.email })
+}
+export function addNewFollowedUserOnDb(onlineUserEmail, followedUserEmail) { // adds the new followed user to the onlineUser following and adds the onlineUser to the followed user followers
+    const updateOnlineUserFollowing = () => {
+        db.collection("registeredUser")
+            .doc(onlineUserEmail)
+            .collection('following')
+            .doc(followedUserEmail)
+            .set({ followingEmail: followedUserEmail });
+    }
+    const updateFollowedUserFollowers = () => {
+        db.collection("registeredUser")
+            .doc(followedUserEmail)
+            .collection('followers')
+            .doc(onlineUserEmail)
+            .set({ followerEmail: onlineUserEmail });
+    }
+    updateOnlineUserFollowing()
+    updateFollowedUserFollowers()
+
+}
+export function removeFollowedUserOnDb(onlineUserEmail, followedUserEmail) { // removes the followed user from the onlineUser following and removes the onlineUser from the followed user followers
+    const updateOnlineUserFollowing = () => {
+        db.collection("registeredUser")
+            .doc(onlineUserEmail)
+            .collection('following')
+            .doc(followedUserEmail)
+            .delete()
+    }
+    const updateFollowedUserFollowers = () => {
+        db.collection("registeredUser")
+            .doc(followedUserEmail)
+            .collection('followers')
+            .doc(onlineUserEmail)
+            .delete()
+    }
+    updateOnlineUserFollowing()
+    updateFollowedUserFollowers()
 }

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import './cssStyles/signUp.css'
 import { Link, useHistory } from 'react-router-dom'
-import {auth} from './firebase'
-import { sendNewUserInfoToDb } from './get&setDatato&FroDb';
+import { auth} from './firebase'
+import { sendNewUserInfoToDb, addNewUserToTotalUserInDb } from './get&setDatato&FroDb';
 
-function SignUp({ setRefresh, setNewUser }) {
+function SignUp({ setRefresh }) {
     const [email, setEmail] = useState(""); // keeps state for inputed user email
     const [password, setPassword] = useState(""); // keeps state for inputed user password
     const [fullName, setFullName] = useState(""); // keeps state for inputed user fullname
@@ -32,12 +32,11 @@ function SignUp({ setRefresh, setNewUser }) {
                     setFullName("");
                     setPassword("");
                     setRefresh(true);
-                    setNewUser(true);
                     return authUser.user.updateProfile({
                         displayName: username
                     })
                 }).then(authUser => {
-                    console.log(authUser)
+                    addNewUserToTotalUserInDb(authUser.user) // adds ther new user to the total number of user in the db
                     history.push("/timeline") // redirect to timeline page
                 })
                 .catch((error) => alert(error.message))

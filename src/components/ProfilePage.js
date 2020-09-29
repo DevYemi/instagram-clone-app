@@ -10,13 +10,14 @@ import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import { useStateValue } from './StateProvider'
 import { setNewOnlineUserAviToDb } from './get&setDatato&FroDb';
 
-function ProfilePage(props) {
-    const [{ user, userPosts, following, followers, onlineUserInfo }] = useStateValue(); // keeps state on current logged in user and userPosts
 
-    const uploadAvi = (e) => {
+function ProfilePage(props) {
+    const [{ user, userPosts, following, followers, onlineUserInfo }, dispatch] = useStateValue(); // keeps state on current logged in user and userPosts
+
+       const uploadAvi = (e) => {
         if (e.target.files[0]) {
             let image = e.target.files[0]
-            setNewOnlineUserAviToDb(image, onlineUserInfo);
+            setNewOnlineUserAviToDb(image, onlineUserInfo, dispatch);
         }
     }
     return (
