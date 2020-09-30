@@ -1,5 +1,5 @@
 import React from 'react'
-import './cssStyles/profilePage.css'
+import './cssStyles/profile.css'
 import Avatar from '@material-ui/core/Avatar'
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import { Link } from 'react-router-dom'
@@ -11,7 +11,7 @@ import { useStateValue } from './StateProvider'
 import { setNewOnlineUserAviToDb } from './get&setDatato&FroDb';
 
 
-function ProfilePage(props) {
+function Profile(props) {
     const [{ user, userPosts, following, followers, onlineUserInfo }, dispatch] = useStateValue(); // keeps state on current logged in user and userPosts
 
        const uploadAvi = (e) => {
@@ -20,8 +20,9 @@ function ProfilePage(props) {
             setNewOnlineUserAviToDb(image, onlineUserInfo, dispatch);
         }
     }
+
     return (
-        <div className="profilePage">
+        <div className="profile">
             <section className="profilePage__sec1">
                 <div className="profilePage__avatar_wrapper">
                 <Avatar
@@ -47,47 +48,35 @@ function ProfilePage(props) {
                 </div>
             </section>
             <section className="profilePage__sec2">
-                <div className="navLinks">
-                    <Link to='/'>
-                        <div className="profilePagepost navLink active">
+                <div className="navLinks" >
+                    <Link to='/profile'>
+                        <div className="profilePagepost navLink">
                             <GridOnOutlinedIcon className='navLink_icon profilePagepost' />
                             <p>Post</p>
                         </div>
                     </Link>
-                    <Link to='/'>
-                        <div className="navLink">
-                            <LiveTvOutlinedIcon className='navLink_icon profilePageigtv' />
+                    <Link to='/profile/igtv'>
+                        <div className="profilePageigtv navLink">
+                            <LiveTvOutlinedIcon className='navLink_icon' />
                             <p>IGTV</p>
                         </div>
                     </Link>
-                    <Link to='/'>
+                    <Link to='/profile/saved'>
                         <div className="profilePagesaved navLink">
                             <BookmarkBorderSharpIcon className='navLink_icon' />
                             <p>SAVED</p>
                         </div>
                     </Link>
-                    <Link to='/'>
-                        <div className="profilePagetagged navLink">
+                    <Link to='/profile/tagged'>
+                        <div className="profilePageTagged navLink">
                             <AccountBoxOutlinedIcon className="navLink_icon" />
                             <p>TAGGED</p>
                         </div>
                     </Link>
-                </div>
-                <div className="profilePage__post">
-                    {userPosts.length > 0 &&
-                        userPosts.map(({ post, id }) => {
-                            return (
-                                <div key={id} className="profilePage__gridItem">
-                                    <img src={post.postImage} alt="post" />
-                                </div>
-                            )
-                        }
-                        )
-                    }
                 </div>
             </section>
         </div>
     )
 }
 
-export default ProfilePage
+export default Profile

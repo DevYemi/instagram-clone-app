@@ -1,5 +1,6 @@
 export const initialState = { // InititalState given to the React Context API
     userPosts: [],
+    userSavedPosts: [],
     user: null,
     timelinePosts: [],
     followers: [],
@@ -22,6 +23,8 @@ function reducer(state, action) { // changes the InitialState and set it to a ne
         return {...state, user: action.user}
         case "SET_USER_POSTS": 
         return {...state, userPosts: action.userPosts}
+        case "SET_USER_SAVED_POSTS": 
+        return {...state, userSavedPosts: action.userSavedPosts}
         case "SET_TIMELINE_POSTS": 
          let updatedPosts =  filterTimelinePosts(state.timelinePosts, action.timelinePosts )
         return {...state, timelinePosts: updatedPosts}

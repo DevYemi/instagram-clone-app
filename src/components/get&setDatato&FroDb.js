@@ -95,6 +95,20 @@ export function getUserPosts(user, dispatch) {  // get the posts of the current 
         })
 }
 
+export function getUserSavedPosts(user, dispatch) {  // get the posts of the current logged in user
+    return db.collection("registeredUser")
+        .doc(user?.email)
+        .collection("savedPosts")
+        .orderBy("timeStamp", "desc")
+        .onSnapshot(snapshot => {
+            dispatch({
+                type: "SET_USER_SAVED_POSTS",
+                userSavedPosts: snapshot.docs.map(doc => { return { savedPost: doc.data(), id: doc.id } })
+            }
+            )
+        })
+}
+
 export function getFollowing(user, dispatch) {  // get the following of the current logged in user
     return db.collection("registeredUser")
         .doc(user?.email)
@@ -110,7 +124,7 @@ export function getFollowing(user, dispatch) {  // get the following of the curr
 
 export function getTimelinePosts(user, dispatch) {  // get and compile of the current logged in user timeline post gotten from the user following
     const getFollowingPostFromDb = (id) => {
-        
+
         let avatar;
         let docRef = db.collection("registeredUser").doc(id)
         docRef.get().then(doc => { // Gets the poster Avi from the db
@@ -311,4 +325,82 @@ export function removeFollowedUserOnDb(onlineUserEmail, followedUserEmail) { // 
     }
     updateOnlineUserFollowing()
     updateFollowedUserFollowers()
+}
+export function setSavedPostsToDb(eventType, user, posterEmail, postId, totalSaved, savedId, setSaved, setSavedId, postImage) {  // add or remove the current logged in user saved post from the db
+    switch (eventType) {
+        case "ADD":
+            if (!user) {
+                alert("Please Log In To Be Able To Save A Post")
+            } else {
+                const savePostToPosterDb = () => {
+                    db.collection("registeredUser")
+                        .doc(posterEmail)
+                        .collection('posts')
+                        .doc(postId)
+                        .collection('totalSaved')
+                        .add({ savedBy: user.email });
+                    setSaved(true);
+                }
+                const savePostToTheOnlineUserDb = () => {
+                    db.collection("registeredUser")
+                        .doc(user?.email)
+                        .collection('savedPosts')
+                        .doc(postId)
+                        .set({
+                            posterEmail: posterEmail,
+                            postImage: postImage,
+                            timeStamp: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                }
+                savePostToPosterDb()
+                savePostToTheOnlineUserDb()
+            }
+
+            break;
+        case "REMOVE":
+            totalSaved.forEach((saved) => {
+                saved.data.savedBy === user?.email && setSavedId(saved.id);
+            })
+            if (savedId) {
+                const removePostFromPosterDb = () => {
+                    db.collection("registeredUser")
+                        .doc(posterEmail)
+                        .collection('posts')
+                        .doc(postId)
+                        .collection('totalSaved')
+                        .doc(savedId)
+                        .delete();
+                    setSaved(false);
+                    setSavedId("");
+                }
+                const removePostFromTheOnlineUserDb = () => {
+                    db.collection("registeredUser")
+                        .doc(user?.email)
+                        .collection('savedPosts')
+                        .doc(postId)
+                        .delete();
+                }
+                removePostFromPosterDb()
+                removePostFromTheOnlineUserDb()
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+export function getSavedFromDb(posterEmail, postId, setTotalSaved, user, setSavedId) { // gets the total user that has saved the posts from the db and check if the current logged has  previously saved the post
+    return db
+        .collection("registeredUser")
+        .doc(posterEmail)
+        .collection("posts")
+        .doc(postId)
+        .collection("totalSaved")
+        .onSnapshot(snapshot => {
+            let array = snapshot.docs.map(doc => ({ data: doc.data(), id: doc.id }));
+            setTotalSaved(array);
+            array.forEach((saved) => {
+                saved.data.savedBy === user?.email && setSavedId(saved.id);
+            })
+        });
 }

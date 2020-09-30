@@ -50,7 +50,7 @@ useEffect(()=>{ // shows and hide a div when the avatar icon is clicked in the h
     <header>
       <div className="header">
         <div className="header__column1">
-          <Link to='/'>
+          <Link to='/timeline'>
             <img src="https://logo-logos.com/wp-content/uploads/2016/10/Instagram_logo_wordmark_logotype.png" alt="logo" className="header__logo" />
           </Link>
         </div>
@@ -77,11 +77,11 @@ useEffect(()=>{ // shows and hide a div when the avatar icon is clicked in the h
                 <AccountBoxOutlinedIcon />
                 <span>Profile</span>
               </Link>
-              <Link to="/saved">
+              <Link to="/profile/saved">
                 <BookmarkBorderSharpIcon />
                 <span>Saved</span>
               </Link>
-              <Link to="/profile">
+              <Link to="/">
                 <SettingsOutlinedIcon />
                 <span>Settings</span>
               </Link>
