@@ -151,7 +151,7 @@ export function getTimelinePosts(user, dispatch) {  // get and compile of the cu
         .doc(user?.email)
         .collection("following")
         .onSnapshot(snapshot => {
-            console.log(snapshot.docs.map(doc => { return { post: doc.data(), id: doc.id } }))
+            // console.log(snapshot.docs.map(doc => { return { post: doc.data(), id: doc.id } }))
             let following = snapshot.docs.map(doc => doc.data())
             following.forEach(following => {
                 getFollowingPostFromDb(following.followingEmail);
@@ -180,9 +180,6 @@ export function getLikesFromDb(posterEmail, postId, setTotalLikes, user, setLike
         .onSnapshot(snapshot => {
             let array = snapshot.docs.map(doc => ({ data: doc.data(), id: doc.id }));
             setTotalLikes(array);
-            array.forEach((totalLike) => {
-                totalLike.data.like === user?.email && setLikeId(totalLike.id);
-            })
         });
 }
 export function setCommentToDb(posterEmail, postId, user, comment) { // send and set the current logged in user comment on a post to the db

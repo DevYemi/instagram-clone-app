@@ -14,6 +14,7 @@ import { useStateValue } from './StateProvider'
 
 function Post(props) {
     const { postImage, username, caption, avatar, postId, posterEmail } = props
+    // console.log(postId)
     const [{ user }] = useStateValue(); // current logged in user
     const [comments, setComments] = useState([]); // total comment from the db
     const [comment, setComment] = useState(""); // current inputed comment by user
@@ -26,19 +27,22 @@ function Post(props) {
     useEffect(() => { //gets comments and likes from db
         let unsubcribeComment;
         let unsubscribeLikes
+        let unsubscribeSaved
         if (postId) {
             unsubcribeComment = getCommentsFromDb(posterEmail, postId, setComments) // gets all the comment on a particular post
             unsubscribeLikes = getLikesFromDb(posterEmail, postId, setTotalLikes, user, setLikeId) // gets all the like on a particular post
-            unsubscribeLikes = getSavedFromDb(posterEmail, postId, setTotalSaved, user, setSavedId) // gets all the saved user that ever saved a particuar posts
+            unsubscribeSaved = getSavedFromDb(posterEmail, postId, setTotalSaved, user, setSavedId) // gets all the saved user that ever saved a particuar posts
         }
-        return () => { unsubcribeComment(); unsubscribeLikes(); }
+        return () => { unsubcribeComment(); unsubscribeLikes(); unsubscribeSaved(); }
     }, [postId, user, posterEmail])
     useEffect(() => { // checks if current logged in user as previously liked or saved the post
-        if (totalLikes) {
+        if (totalLikes?.length > 0) {
+            console.log(totalLikes)
             for (let i = 0; i < totalLikes.length; i++) {
                 const totalLike = totalLikes[i];
                 if (totalLike.data.like === user?.email) {
                     setLiked(true);
+                    setLikeId(totalLike.id)
                     i = totalLikes.length + 1
                 } else {
                     setLiked(false);
@@ -46,11 +50,13 @@ function Post(props) {
             }
 
         }
-        if (totalSaved) {
+        if (totalSaved?.length > 0) {
             for (let i = 0; i < totalSaved.length; i++) {
                 const saved = totalSaved[i];
                 if (saved.data.savedBy === user?.email) {
+                    console.log(saved.data.savedBy, user?.email)
                     setSaved(true);
+                    setSavedId(saved.id)
                     i = totalSaved.length + 1
                 } else {
                     setSaved(false);
@@ -78,7 +84,7 @@ function Post(props) {
         setSavedPostsToDb(eventType, user, posterEmail, postId, totalSaved, savedId, setSaved, setSavedId,postImage)
     }
 
-
+    // console.log(liked)
     return (
         <div className='post'>
             <div className="p__headerContainer">
@@ -138,4 +144,4 @@ function Post(props) {
     )
 }
 
-export default Post
+export default React.memo(Post)

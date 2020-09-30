@@ -9,6 +9,7 @@ import {useStateValue} from './StateProvider'
 
 function Timeline({refresh}) {
   const [{user, timelinePosts}] = useStateValue(); // current user and user timelinePosts
+  console.log(timelinePosts)
 
  useEffect(() => { // refreshes component if a new user just sign up to get user info
   //  if (refresh) {
@@ -24,7 +25,7 @@ function Timeline({refresh}) {
 
           {timelinePosts.length > 0 &&
             timelinePosts.map(({ timelinePosts, id, posterEmail, posterAvi }, index) => <Post
-              key={index}
+              key={id}
               postId={id}
               posterEmail={posterEmail}
               avatar={posterAvi}
