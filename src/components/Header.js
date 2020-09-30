@@ -22,7 +22,7 @@ import ChangeHistoryOutlinedIcon from '@material-ui/icons/ChangeHistoryOutlined'
 
 function Header({ setModalOpen, setModalType }) {
   const history = useHistory();  // a fucition from react-router-dom so as to be able to redirect to the login page when a new user sign out
-  const [{ user }] = useStateValue(); // current logged in user
+  const [{ user, onlineUserInfo }] = useStateValue(); // current logged in user
   const handleLogOut = () => { // sign out the current logged in user and redirect to the login page
       auth.signOut();
       history.push("/login");
@@ -68,16 +68,16 @@ useEffect(()=>{ // shows and hide a div when the avatar icon is clicked in the h
           <div className="header__avatarWrapper">
             <Avatar
               className='header__avatar'
-              alt={user?.displayName || "Anonymous"}
-              src={user?.avatar}
+              alt={onlineUserInfo?.displayName || "Anonymous"}
+              src={onlineUserInfo?.avatar}
             />
             <div className="header__avatarLinks">
               <ChangeHistoryOutlinedIcon id="header__avatarLinks_indicator" />
-              <Link to="/profile">
+              <Link to="/onlineUserProfile">
                 <AccountBoxOutlinedIcon />
                 <span>Profile</span>
               </Link>
-              <Link to="/profile/saved">
+              <Link to="/onlineUserProfile/saved">
                 <BookmarkBorderSharpIcon />
                 <span>Saved</span>
               </Link>

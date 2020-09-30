@@ -7,13 +7,13 @@ import Header from './components/Header'
 import Login from './components/Login'
 import Timeline from './components/Timeline';
 import Footer from './components/Footer'
-import ProfileSaved from './components/ProfileSaved'
+import OnlineUserProfileSaved from './components/onlineUserProfilePage/OnlineUserProfileSaved'
 import Chat from './components/Chat'
 import SignUp from './components/SignUp'
-import ProfilePosts from './components/ProfilePosts'
+import OnlineUserProfilePosts from './components/onlineUserProfilePage/OnlineUserProfilePosts'
 import { useStateValue } from './components/StateProvider'
-import ProfileIgtv from './components/ProfileIgtv';
-import ProfileTagged from './components/ProfileTagged';
+import OnlineUserProfileIgtv from './components/onlineUserProfilePage/OnlineUserProfileIgtv';
+import OnlineUserProfileTagged from './components/onlineUserProfilePage/OnlineUserProfileTagged';
 
 
 
@@ -80,24 +80,24 @@ function App() {
             <SignUp setRefresh={setRefresh} />
             <Footer />
           </Route>
-          <Route exact path="/profile">
+          <Route exact path="/onlineUserProfile">
             <Header />
-            <ProfilePosts />
+            <OnlineUserProfilePosts />
             <Footer />
           </Route>
-          <Route path="/profile/saved">
+          <Route path="/onlineUserProfile/saved">
             <Header />
-            <ProfileSaved />
+            <OnlineUserProfileSaved />
             <Footer />
           </Route>
-          {/* <Route to="/profile/tagged">
+          {/* <Route to="/onlineUserProfile/tagged">
             <Header />
-            <ProfileTagged />
+            <OnlineUserProfileTagged />
             <Footer />
           </Route> */}
-          {/* <Route exact to="/profile/igtv">
+          {/* <Route exact to="/onlineUserProfile/igtv">
             <Header />
-            <ProfileIgtv />
+            <OnlineUserProfileIgtv />
             <Footer />
           </Route> */}
         </Switch>

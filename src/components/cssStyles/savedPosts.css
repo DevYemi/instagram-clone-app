@@ -1,24 +1,21 @@
-.profileSaved{
-    width: 935px;
-    margin: 20px auto;
-}
-.profileSaved__post {
+
+.savedPosts__post {
     margin-top: 1em;
     display: grid;
     grid-template-columns: auto auto auto;
     grid-gap: 20px 20px;
 }
-.profileSaved__gridItem {
+.savedPosts__gridItem {
     width: 100%;
     max-height: 300px;
     overflow: hidden;
 }
-.profileSaved__gridItem img {
+.savedPosts__gridItem img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-.profileSaved__noPost {
+.savedPosts__noPost {
     display: flex;
     align-items: center;
     font-weight: 200;
@@ -29,28 +26,22 @@
     justify-content: center;
     width: 62px;
 }
-.profileSaved__noPost_content {
+.savedPosts__noPost_content {
     display: flex;
     margin-top: 1em;
     align-items: center;
     flex-direction: column;
 
 }
-.profileSaved__noPost_content p {
+.savedPosts__noPost_content p {
     margin-top: .5em;
     font-size: small;
     color: rgba(0, 0, 0, 0.404);
 }
-.profileSaved__noPost_content h3  {
+.savedPosts__noPost_content h3  {
     font-weight: 100;
     color: #000000d5;
     letter-spacing: 1px;
     font-size: 1.3rem;
 }
 
-@media (max-width: 768px) {
-    .profileSaved{
-        width: 100%;
-        padding: 1em;
-    }
-   }

@@ -253,7 +253,8 @@ export function sendNewUserInfoToDb(authUser, fullName, username) { // sends the
             email: authUser.user.email,
             fullname: fullName,
             username: username,
-            avatar: ""
+            avatar: "",
+            verified: false
         })
 }
 export function setNewOnlineUserAviToDb(image, user, dispatch) {

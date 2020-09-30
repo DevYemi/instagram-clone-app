@@ -1,21 +1,18 @@
 import React, { useEffect } from 'react'
-import './cssStyles/profileSaved.css'
-import Profile from './Profile.js'
-import { useStateValue } from './StateProvider';
+import '../cssStyles/savedPosts.css'
 import BookmarkBorderSharpIcon from '@material-ui/icons/BookmarkBorderSharp';
 
-function ProfileSaved() {
-    const [{ userSavedPosts }] = useStateValue();
+function SavedPosts({userSavedPosts}) {
     console.log(userSavedPosts)
     useEffect(() => {
         var prevActiveNav = document.querySelector(".navLink.active");
-        var curActiveNav = document.querySelector(".profilePagesaved");
+        var curActiveNav = document.querySelector(".UserSaved");
         prevActiveNav && prevActiveNav.classList.remove("active")
         curActiveNav.classList.add("active")
     }) 
     useEffect(()=>{
         if (!userSavedPosts.length > 0 || userSavedPosts.length === 1) {
-            var postWrapper = document.querySelector(".profileSaved__post");
+            var postWrapper = document.querySelector(".savedPosts__post");
             postWrapper.style.display = "block"
             postWrapper.style.width = "300px"
             postWrapper.style.margin= "1em auto 0 auto"
@@ -23,13 +20,11 @@ function ProfileSaved() {
         }
     })
     return (
-        <div className="profileSaved">
-            <Profile />
-            <div className="profileSaved__post">
+            <div className="savedPosts__post">
                 {userSavedPosts.length > 0 ? 
                     userSavedPosts.map(({ savedPost, id }) => {
                         return (
-                            <div key={id} className="profileSaved__gridItem">
+                            <div key={id} className="savedPosts__gridItem">
                                 <img src={savedPost.postImage} alt="post" />
                             </div>
                         )
@@ -37,18 +32,17 @@ function ProfileSaved() {
                     )
                 :
                 <>
-                 <div className="profileSaved__noPost">
-                 < BookmarkBorderSharpIcon className="profileSaved__noPost_icon" />
+                 <div className="savedPosts__noPost">
+                 < BookmarkBorderSharpIcon className="savedPosts__noPost_icon" />
                 </div>
-                <div className="profileSaved__noPost_content">
+                <div className="savedPosts__noPost_content">
                     <h3>Save</h3>
                     <p>Save photos and videos that you want to see again. No one is notified, and only you can see what you've saved</p>
                 </div> 
                 </>
                 }
             </div>
-        </div>
     )
 }
 
-export default ProfileSaved
+export default SavedPosts

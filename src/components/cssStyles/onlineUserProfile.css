@@ -1,10 +1,10 @@
 
-.profilePage__sec1 {
+.onlineUserProfile__sec1 {
     display: flex;
     align-items: center;
     margin-bottom: 4em;
 }
-.profilePage__avatar_wrapper {
+.onlineUserProfile__avatar_wrapper {
     margin: 0 5em 0 3em !important;
     position: relative;
     width: 100%;
@@ -12,7 +12,7 @@
     width: 130px;
     height: 130px;
 }
-.profilePage__avatar_wrapper > input {
+.onlineUserProfile__avatar_wrapper > input {
     width: 100%;
     height: 100%;
     cursor: pointer;
@@ -24,7 +24,12 @@
     left: 0;
 
 }
-.profilePage__avatar {
+.onlineUserProfile__Verified {
+    object-fit: contain;
+    margin-left: -.7em;
+    margin-right: .7em;
+}
+.onlineUserProfile__avatar {
     width: 130px !important;
     height: 130px !important;
 }
@@ -33,7 +38,7 @@
     margin-bottom: 1em;
     align-items: center;
 }
-.pP__detail_row1 > p, .pP__detail_row1 > h3, .profilePage__settingIcon {
+.pP__detail_row1 > p, .pP__detail_row1 > h3, .onlineUserProfile__settingIcon {
     margin-right: .7em;
 }
 .pP__detail_row1 > h3 {
@@ -53,11 +58,12 @@
 .postNum, .followerNum, .followingNum {
     margin-right: .7em;
 }
-.profilePage__sec2 {
+.onlineUserProfile__sec2 {
     border-top: 1px solid lightgray;
     padding: 0 1em;
 }
 .navLinks {
+    padding-top: .5em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,7 +71,8 @@
 .navLink.active {
     transition: all .5s ease-in-out;
     border-top: 1px solid black ;
-    padding-top: 1.3em;
+    padding-top: 1em;
+    margin-top: -.7em;
 }
 .navLink.active >.navLink_icon, .navLink.active > p {
     color: black !important;
@@ -73,7 +80,7 @@
 .navLinks a {
     color: rgba(0, 0, 0, 0.247);
     text-decoration: none;
-    margin: 0 2em;
+    margin: 0 1.3em;
 }
 .navLink {
     display: flex;
@@ -89,7 +96,7 @@
 }
 
    @media (max-width: 465px) {
-    .profilePage__avatar {
+    .onlineUserProfile__avatar {
         width: 100px !important;
         height: 100px !important;
         margin: 0 2em .5em .5em !important;
@@ -103,12 +110,12 @@
     .pP__deatil_row2 {
         display: flex;
     }
-    .profilePage__sec1 {
+    .onlineUserProfile__sec1 {
         display: flex;
         align-items: center;
         flex-direction: column;
     }
-    .pP__detail_row1 > p, .pP__detail_row1 > h3, .profilePage__settingIcon {
+    .pP__detail_row1 > p, .pP__detail_row1 > h3, .onlineUserProfile__settingIcon {
         margin-bottom: .5em;
     }
     .postNum, .followerNum, .followingNum {
