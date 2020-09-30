@@ -50,25 +50,25 @@ function OnlineUserProfile(props) {
             </section>
             <section className="onlineUserProfile__sec2">
                 <div className="navLinks" >
-                    <Link to='/onlineUserProfile'>
+                    <Link to='/onlineuserprofile/posts'>
                         <div className="UserPost navLink">
                             <GridOnOutlinedIcon className='navLink_icon onlineUserPost' />
                             <p>Post</p>
                         </div>
                     </Link>
-                    <Link to='/onlineUserProfile/igtv'>
+                    <Link to='/onlineuserprofile/igtv'>
                         <div className="UserIgtv navLink">
                             <LiveTvOutlinedIcon className='navLink_icon' />
                             <p>IGTV</p>
                         </div>
                     </Link>
-                    <Link to='/onlineUserProfile/saved'>
+                    <Link to='/onlineuserprofile/saved'>
                         <div className="UserSaved navLink">
                             <BookmarkBorderSharpIcon className='navLink_icon' />
                             <p>SAVED</p>
                         </div>
                     </Link>
-                    <Link to='/onlineUserProfile/tagged'>
+                    <Link to='/onlineuserprofile/tagged'>
                         <div className="UserTagged navLink">
                             <AccountBoxOutlinedIcon className="navLink_icon" />
                             <p>TAGGED</p>

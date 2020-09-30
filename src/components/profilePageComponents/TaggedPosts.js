@@ -10,34 +10,36 @@ function TaggedPosts({ userPosts }) {
         curActiveNav.classList.add("active")
     })
     useEffect(() => {
-        if (userPosts) {
-            var postWrapper = document.querySelector(".taggedPosts__post");
-            postWrapper.style.display = "block"
-            postWrapper.style.width = "300px"
-            postWrapper.style.margin = "1em auto 0 auto"
-            postWrapper.style.textAlign = "center"
+        var postWrapper = document.querySelector(".taggedPosts__post");
+        if (!userPosts?.length > 0 || userPosts?.length === 1) {
+            postWrapper.classList.add("noPosts")
+        } else {
+            postWrapper.classList.remove("noPosts")
         }
     })
     return (
 
-        <div className="taggedPosts__post">
-            <div className="taggedPosts__noPost">
-                < AccountBoxOutlinedIcon className="taggedPosts__noPost_icon" />
-            </div>
-            <div className="taggedPosts__noPost_content">
-                <h3>Tagged</h3>
-                <p>You haven't been tagged to any of your followers photos and videos yet. </p>
-            </div>
-            {/* {userPosts.length > 0 &&
-                    userPosts.map(({ post, id }) => {
-                        return (
-                            <div key={id} className="taggedPosts__gridItem">
-                                <img src={post.postImage} alt="post" />
-                            </div>
-                        )
-                    }
+        <div className="taggedPosts__post noPosts">
+            {userPosts?.length > 0 ?
+                userPosts.map(({ post, id }) => {
+                    return (
+                        <div key={id} className="taggedPosts__gridItem">
+                            <img src={post.postImage} alt="post" />
+                        </div>
                     )
-                } */}
+                }
+                ) :
+                <>
+                    <div className="taggedPosts__noPost">
+                        < AccountBoxOutlinedIcon className="taggedPosts__noPost_icon" />
+                    </div>
+                    <div className="taggedPosts__noPost_content">
+                        <h3>Tagged</h3>
+                        <p>You haven't been tagged to any of your followers photos and videos yet. </p>
+                    </div>
+                </>
+            }
+
         </div>
     )
 }

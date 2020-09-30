@@ -11,17 +11,16 @@ function SavedPosts({userSavedPosts}) {
         curActiveNav.classList.add("active")
     }) 
     useEffect(()=>{
-        if (!userSavedPosts.length > 0 || userSavedPosts.length === 1) {
-            var postWrapper = document.querySelector(".savedPosts__post");
-            postWrapper.style.display = "block"
-            postWrapper.style.width = "300px"
-            postWrapper.style.margin= "1em auto 0 auto"
-            postWrapper.style.textAlign = "center"
+        var postWrapper = document.querySelector(".savedPosts__post");
+        if (!userSavedPosts?.length > 0 || userSavedPosts?.length === 1) {
+            postWrapper.classList.add("noPosts")
+        }else {
+            postWrapper.classList.remove("noPosts")
         }
     })
     return (
-            <div className="savedPosts__post">
-                {userSavedPosts.length > 0 ? 
+            <div className="savedPosts__post noPosts">
+                {userSavedPosts?.length > 0 ? 
                     userSavedPosts.map(({ savedPost, id }) => {
                         return (
                             <div key={id} className="savedPosts__gridItem">

@@ -44,3 +44,9 @@
     letter-spacing: 1px;
     font-size: 1.3rem;
 }
+.igtvPosts__post.noPosts {
+    display: block;
+    width: 300px;
+    margin: 1em auto 0 auto;
+    text-align: center;
+}

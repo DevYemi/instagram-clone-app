@@ -10,18 +10,17 @@ function UploadedPosts({ userPosts }) {
         curActiveNav.classList.add("active")
     })
     useEffect(() => {
-        if (!userPosts.length > 0) {
-            var postWrapper = document.querySelector(".uploadedPosts__post");
-            postWrapper.style.display = "block"
-            postWrapper.style.width = "300px"
-            postWrapper.style.margin = "1em auto 0 auto"
-            postWrapper.style.textAlign = "center"
+        var postWrapper = document.querySelector(".uploadedPosts__post");
+        if (!userPosts?.length > 0 || userPosts?.length === 1) {
+            postWrapper.classList.add("noPosts")
             console.log("working")
+        } else {
+            postWrapper.classList.remove("noPosts")
         }
-    })
+    },[userPosts])
     return (
-        <div className="uploadedPosts__post">
-            {userPosts.length > 0 ?
+        <div className="uploadedPosts__post noPosts">
+            {userPosts?.length > 0 ?
                 userPosts.map(({ post, id }) => {
                     return (
                         <div key={id} className="uploadedPosts__gridItem">

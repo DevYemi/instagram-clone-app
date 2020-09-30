@@ -1,18 +1,18 @@
 import React from 'react'
-import OnlineUserProfile from './OnlineUserProfile'
+import OtherUserProfile from './OtherUserProfile'
 import IgtvPosts from '../profilePageComponents/IgtvPosts'
-import '../cssStyles/onlineUserProfileIgtv.css'
+import '../cssStyles/otherUserProfileIgtv.css'
 import { useStateValue } from '../StateProvider';
-function OnlineUserProfileIgtv() {
+function OtherUserProfileIgtv() {
     const [{userPosts}] = useStateValue();
     return (
-        <div className="onlineUserProfileIgtv">
-            <OnlineUserProfile />
+        <div className="OtherUserProfileIgtv">
+            <OtherUserProfile />
             <IgtvPosts userPosts={userPosts} />
         </div>
     )
 }
 
-export default OnlineUserProfileIgtv
+export default OtherUserProfileIgtv
 
 

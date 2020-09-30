@@ -7,13 +7,17 @@ import Header from './components/Header'
 import Login from './components/Login'
 import Timeline from './components/Timeline';
 import Footer from './components/Footer'
-import OnlineUserProfileSaved from './components/onlineUserProfilePage/OnlineUserProfileSaved'
 import Chat from './components/Chat'
 import SignUp from './components/SignUp'
-import OnlineUserProfilePosts from './components/onlineUserProfilePage/OnlineUserProfilePosts'
 import { useStateValue } from './components/StateProvider'
+import OtherUserProfileSaved from './components/otherUserProfilePage/OtherUserProfileSaved';
+import OtherUserProfileIgtv from './components/otherUserProfilePage/OtherUserProfileIgtv';
+import OtherUserProfileTagged from './components/otherUserProfilePage/OtherUserProfileTagged';
+import OtherUserProfilePosts from './components/otherUserProfilePage/OtherUserProfilePosts'
+import OnlineUserProfilePosts from './components/onlineUserProfilePage/OnlineUserProfilePosts'
 import OnlineUserProfileIgtv from './components/onlineUserProfilePage/OnlineUserProfileIgtv';
 import OnlineUserProfileTagged from './components/onlineUserProfilePage/OnlineUserProfileTagged';
+import OnlineUserProfileSaved from './components/onlineUserProfilePage/OnlineUserProfileSaved';
 
 
 
@@ -80,36 +84,57 @@ function App() {
             <SignUp setRefresh={setRefresh} />
             <Footer />
           </Route>
-          <Route exact path="/onlineUserProfile">
+          <Route path="/chat">
+            <Header />
+            <Chat />
+          </Route>
+          <Route exact path="/timeline" >
+            <Header />
+            <Timeline refresh={refresh} />
+            <Footer />
+          </Route>
+          <Route exact path="/otheruserprofile/posts" >
+            <Header />
+            <OtherUserProfilePosts />
+            <Footer />
+          </Route>
+          <Route exact path="/otheruserprofile/saved" >
+            <Header />
+            <OtherUserProfileSaved />
+            <Footer />
+          </Route>
+          <Route exact path="/otheruserprofile/igtv" >
+            <Header />
+            <OtherUserProfileIgtv />
+            <Footer />
+          </Route>
+          <Route exact path="/otheruserprofile/tagged" >
+            <Header />
+            <OtherUserProfileTagged />
+            <Footer />
+          </Route>
+          <Route exact path="/onlineuserprofile/posts" >
             <Header />
             <OnlineUserProfilePosts />
             <Footer />
           </Route>
-          <Route path="/onlineUserProfile/saved">
+          <Route exact path="/onlineuserprofile/saved" >
             <Header />
             <OnlineUserProfileSaved />
             <Footer />
           </Route>
-          {/* <Route to="/onlineUserProfile/tagged">
-            <Header />
-            <OnlineUserProfileTagged />
-            <Footer />
-          </Route> */}
-          {/* <Route exact to="/onlineUserProfile/igtv">
+          <Route exact path="/onlineuserprofile/igtv" >
             <Header />
             <OnlineUserProfileIgtv />
             <Footer />
-          </Route> */}
+          </Route>
+          <Route exact path="/onlineuserprofile/tagged" >
+            <Header />
+            <OnlineUserProfileTagged />
+            <Footer />
+          </Route>
+          
         </Switch>
-        <Route path="/chat">
-          <Header />
-          <Chat />
-        </Route>
-        <Route exact path="/timeline" >
-          <Header />
-          <Timeline refresh={refresh} />
-          <Footer />
-        </Route>
       </div>
     </Router>
   );

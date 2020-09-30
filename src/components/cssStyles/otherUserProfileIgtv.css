@@ -1,0 +1,10 @@
+.otherUserProfileIgtv{
+    width: 935px;
+    margin: 20px auto;
+}
+@media (max-width: 768px) {
+    .otherUserProfileIgtv{
+        width: 100%;
+        padding: 1em;
+    }
+   }

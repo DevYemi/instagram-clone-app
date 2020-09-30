@@ -1,16 +1,16 @@
 import React from 'react'
-import OnlineUserProfile from './OnlineUserProfile'
+import OtherUserProfile from './OtherUserProfile'
 import UploadedPosts from '../profilePageComponents/UploadedPosts'
-import '../cssStyles/onlineUserProfilePosts.css'
+import '../cssStyles/otherUserProfilePosts.css'
 import { useStateValue } from '../StateProvider';
-function OnlineUserProfilePosts() {
+function OtherUserProfilePosts() {
     const [{userPosts}] = useStateValue();
     return (
-        <div className="onlineUserProfilePosts">
-            <OnlineUserProfile />
+        <div className="otherUserProfilePosts">
+            <OtherUserProfile />
             <UploadedPosts userPosts={userPosts} />
         </div>
     )
 }
 
-export default OnlineUserProfilePosts
+export default OtherUserProfilePosts

@@ -115,6 +115,9 @@
         align-items: center;
         flex-direction: column;
     }
+    .pP__detail_row1 > h3 {
+     display: inline-block;
+    }
     .pP__detail_row1 > p, .pP__detail_row1 > h3, .onlineUserProfile__settingIcon {
         margin-bottom: .5em;
     }

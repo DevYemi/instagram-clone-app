@@ -11,6 +11,7 @@ import TurnedInNotSharpIcon from '@material-ui/icons/TurnedInNotSharp';
 import TurnedInSharpIcon from '@material-ui/icons/TurnedInSharp';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { useStateValue } from './StateProvider'
+import { Link } from 'react-router-dom';
 
 function Post(props) {
     const { postImage, username, caption, avatar, postId, posterEmail } = props
@@ -81,7 +82,7 @@ function Post(props) {
     }
     const handleSavedPosts = (e, eventType) => { // add and remove saved post from db
         e.preventDefault();
-        setSavedPostsToDb(eventType, user, posterEmail, postId, totalSaved, savedId, setSaved, setSavedId,postImage)
+        setSavedPostsToDb(eventType, user, posterEmail, postId, totalSaved, savedId, setSaved, setSavedId, postImage)
     }
 
     // console.log(liked)
@@ -89,11 +90,13 @@ function Post(props) {
         <div className='post'>
             <div className="p__headerContainer">
                 <div className="post__header">
-                    <Avatar
-                        className='post__avatar'
-                        alt={username}
-                        src={avatar}
-                    />
+                    <Link to="/otheruserprofile/posts">
+                        <Avatar
+                            className='post__avatar'
+                            alt={username}
+                            src={avatar}
+                        />
+                    </Link>
                     <h3>{username}</h3>
                 </div>
                 <MoreHorizIcon />
